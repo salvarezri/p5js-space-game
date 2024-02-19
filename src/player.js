@@ -1,42 +1,58 @@
 class Player{
-  constructor(initialPos,  acc, initialFriction, initialMaxVel, color){
-    // TODO: change 1 dim acc and vel physics to 2 dim physics
+  // new movement system
+  constructor(initialPos,  impulse, initialFriction, initialMaxVel, color){
     this.pos = initialPos ? initialPos : [200,200]
-    this.vel = 0
-    this.acc = acc ? acc : 0.3
-    this.friction = initialFriction ? initialFriction : 0.1
+    this.vel = [0,0]
+    this.acc = [0,0]
+    this.impulse = impulse ? impulse : 0.3
+    this.friction = initialFriction ? initialFriction : 0.08
     this.maxVel = initialMaxVel ? initialMaxVel : 6
     this.angle = 0
     this.color = color ? color : [0,0,0]
   }
   movement(){
-  
     if(keyIsPressed){
-      this.acc = 0.3
+      // impulse in the direction of the angle (mouse direction)
+      this.acc = [
+        this.impulse * cos(this.angle),
+        this.impulse * sin(this.angle)
+      ]
     }
     else{
-      this.acc = 0
+      this.acc = [0,0]
     }
     
-    if(this.acc > 0){
-      this.vel += this.acc
+    if(normaVector(this.acc) > 0){
+      // acceleration 
+      this.vel = sumVector(this.vel,this.acc)
     }
+
     else{
-      if(this.vel <= 0.01 && this.vel >= -0.01){
-        this.vel = 0
+      if(normaVector(this.vel) <= 0.05){
+        // stop the player if vel is too low
+        this.vel = [0,0]
       }
-      if(this.vel != 0){
-        this.vel -= this.friction 
+      if(this.vel != [0,0]){
+        // apply friction when the player is moving
+        // friction is in the opposite direction of the vel vector
+        const friction = scalarProduct(unitVector(this.vel),this.friction)
+        this.vel = subVector(
+          this.vel,
+          friction
+          ) 
       }
     }
-    if(this.vel>this.maxVel){
-      this.vel=this.maxVel
+    if(normaVector(this.vel)>this.maxVel){
+      // limit the max velocity
+      this.vel=scalarProduct(unitVector(this.vel),this.maxVel)
     }
-    
-    this.pos[0] += this.vel* cos(this.angle)
-    this.pos[1] += this.vel* sin(this.angle)
+
+    // update the position
+    this.pos[0] += this.vel[0]
+    this.pos[1] += this.vel[1]
   }
   calcRotation(){
+    // calculate the angle of the player relative to the mouse
     let x = mouseX - this.pos[0];
     let y = mouseY - this.pos[1];
     this.angle = atan2(y, x);

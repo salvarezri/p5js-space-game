@@ -31,7 +31,6 @@ You can add a library by downloading the library and putting it in the lib folde
 I already added the p5js library to lib folder and added the script tag in the index.html file. The other libraries I mentioned before are in the lib folder, but the script tag is not added, so you can add it if you want to use them.
 ## What is done?
 - The spaceship can move and have some inertia.
-  - The physics looks weird because velocity and acceleration are only in magnitude, so we should change it to vectors.
 - the background with stars is done
 ## What is missing?
 - The asteroids

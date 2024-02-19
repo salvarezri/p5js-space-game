@@ -10,17 +10,24 @@ class BackgroundStars{
     this.setup()
   }
   draw(){
+    // draw a black background
     background(0)
+    // draw the stars
     for(let i = 0; i < this.stars.length; i+=1){
+      // points with different sizes, brightness and positions
+      // defined by the stars array.
+      // some stars vhange their brightness over time randomly
       strokeWeight(this.stars[i][2])
       stroke(this.stars[i][4]== 1 ? Math.floor(randomGaussian(200,100)) : this.stars[i][3])
       point(this.stars[i][0],this.stars[i][1])
     }
+    // reset the stroke
     strokeWeight(1)
     stroke(255)
   }
   setup(){
-    for(let i = 0; i < 25; i++){
+    // create the stars array defined by the constructor params
+    for(let i = 0; i < this.n; i++){
       this.stars.push([
         Math.floor(random(0,width)),
         Math.floor(random(0,height)),

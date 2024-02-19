@@ -13,7 +13,7 @@ class BackgroundStars{
     background(0)
     for(let i = 0; i < this.stars.length; i+=1){
       strokeWeight(this.stars[i][2])
-      stroke(this.stars[i][4]== 1 ? Math.floor(randomGaussian(200,50)) : this.stars[i][3])
+      stroke(this.stars[i][4]== 1 ? Math.floor(randomGaussian(200,100)) : this.stars[i][3])
       point(this.stars[i][0],this.stars[i][1])
     }
     strokeWeight(1)

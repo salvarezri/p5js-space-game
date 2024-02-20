@@ -45,3 +45,19 @@ function unitVector(arr){
   }
   return divVector(arr,normaVector(arr))
 }
+function radToDeg(rad){
+  // convert radians to degrees
+  return rad*180/PI
+}
+function degToRad(deg){
+  // convert degrees to radians
+  return deg*PI/180
+}
+function reverseAngleRad(angle){
+  // reverse of an angle
+  return angle + PI
+}
+function reverseAngleDeg(angle){
+  // reverse of an angle
+  return angle + 180
+}

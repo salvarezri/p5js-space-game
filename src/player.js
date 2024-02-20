@@ -4,9 +4,9 @@ class Player{
     this.pos = initialPos ? initialPos : [200,200]
     this.vel = [0,0]
     this.acc = [0,0]
-    this.impulse = impulse ? impulse : 0.3
-    this.friction = initialFriction ? initialFriction : 0.08
-    this.maxVel = initialMaxVel ? initialMaxVel : 6
+    this.impulse = impulse ? impulse : 1
+    this.friction = initialFriction ? initialFriction : 0.1
+    this.maxVel = initialMaxVel ? initialMaxVel : 10
     this.angle = 0
     this.color = color ? color : [0,0,0]
   }
@@ -69,5 +69,13 @@ class Player{
     fill(this.color);
     rect(this.pos[0],this.pos[1],25,25);
   }
+
+  shoot(){
+    // create a bullet
+    console.log('shoot')
+    return new Bullet(this.pos[0], this.pos[1], this.angle, [100,255,100])
+  }
+  
+  
 
 }

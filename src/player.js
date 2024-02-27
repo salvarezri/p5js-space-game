@@ -1,6 +1,7 @@
 class Player{
   // new movement system
-  constructor(initialPos,  impulse, initialFriction, initialMaxVel, color){
+  constructor(laserSound, impulseSound, explotionSound, initialPos, impulse, initialFriction, initialMaxVel, color){
+    console.log(laserSound, impulseSound, explotionSound)
     this.pos = initialPos ? initialPos : [200,200]
     this.vel = [0,0]
     this.acc = [0,0]
@@ -10,6 +11,11 @@ class Player{
     this.angle = 0
     this.color = color ? color : [0,0,0]
     this.isAccelerating = false
+    this.laserSound = laserSound
+    this.laserSound.setVolume(0.35)
+    this.impulseSound = impulseSound
+    this.impulseSound.setVolume(0.2)
+    this.explotionSound = explotionSound
   }
   movement(){
     if(keyIsPressed){
@@ -19,6 +25,7 @@ class Player{
         this.impulse * cos(this.angle),
         this.impulse * sin(this.angle)
       ]
+      this.impulseSound.play()
     }
     else{
       this.isAccelerating = false
@@ -81,7 +88,8 @@ class Player{
   }
   shoot(){
     // create a bullet
-    return new Bullet(this.pos[0], this.pos[1], this.angle, [100,255,100])
+    this.laserSound.play()
+    return new Bullet(this.pos[0], this.pos[1], this.angle, [100,255,100], this.explotionSound)
   }
 
   angleForParticles(){

@@ -1,5 +1,5 @@
 class Bullet{
-    constructor(x, y, direction, color){
+    constructor(x, y, direction, color, exploplotionSound){
         this.x = x;
         this.y = y;
         this.direction = direction;
@@ -7,6 +7,8 @@ class Bullet{
         this.speed = 10;
         this.size = 5
         this.isAlive = true;
+        this.exploplotionSound = exploplotionSound
+        this.exploplotionSound.setVolume(0.4)
     }
 
     move(){
@@ -23,6 +25,16 @@ class Bullet{
     }
 
     checkCollision(){
+      // check if the bullet is off boundaries
+
+      // chack if bullet collides with an asteroid
+      const colides = random(1, 100) > 98
+      if(colides){
+        this.isAlive = false
+        this.exploplotionSound.play()
+        return true
+      }
+      
       return false
     }
     

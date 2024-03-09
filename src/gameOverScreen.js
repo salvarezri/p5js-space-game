@@ -1,3 +1,4 @@
+/*
 let myFont;
 let text; 
 let startAgaingButton;
@@ -30,3 +31,4 @@ function draw(){
     textAlign(CENTER);
     text(text, width/2, height/2);
 }
+*/

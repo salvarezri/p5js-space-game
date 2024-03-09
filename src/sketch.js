@@ -96,39 +96,39 @@ function moveAndDrawBullets(){
   // move the bullets and remove the ones that are off boundaries
   // go through the array backwards to avoid skipping elements when the element is removed
 
-  for (let i = playerBullets.length-1; i >= 0; i--){
-    playerBullets[i].move()
-    playerBullets[i].draw()
-    if(playerBullets[i].checkCollision()){
-      particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
-      playerBullets.splice(i,1)
-      continue
-    }
-    if(playerBullets[i].isOffBoundaries(0,0,width,height)){
-      playerBullets.splice(i,1)
-    }
-  }
-
   // for (let i = playerBullets.length-1; i >= 0; i--){
   //   playerBullets[i].move()
   //   playerBullets[i].draw()
-  //     if(playerBullets[i].isOffBoundaries(0,0,width,height)){
-  //       playerBullets.splice(i,1)
-  //     } else {
-  //       for (let j = asteroids.length - 1; j >= 0; j--){
-  //         if(playerBullets[i].checkCollision(asteroids[j])){
-  //           if (asteroids[j].r > 10) {
-  //             let newAsteroids = asteroids[j].breakup();
-  //             asteroids = asteroids.concat(newAsteroids);
-  //             //particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
-  //             //playerBullets.splice(i,1)
-  //             //continue
-  //           }
-  //           asteroids.splice(j, 1);
-  //           playerBullets.splice(i, 1);
-  //           break;
-  //         }
-  //     }
+  //   if(playerBullets[i].checkCollision()){
+  //     particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
+  //     playerBullets.splice(i,1)
+  //     continue
+  //   }
+  //   if(playerBullets[i].isOffBoundaries(0,0,width,height)){
+  //     playerBullets.splice(i,1)
   //   }
   // }
+
+  for (let i = playerBullets.length-1; i >= 0; i--){
+    playerBullets[i].move()
+    playerBullets[i].draw()
+      if(playerBullets[i].isOffBoundaries(0,0,width,height)){
+        playerBullets.splice(i,1)
+      } else {
+        for (let j = asteroids.length - 1; j >= 0; j--){
+          if(playerBullets[i].checkCollision(asteroids[j])){
+            if (asteroids[j].r > 10) {
+              let newAsteroids = asteroids[j].breakup();
+              asteroids = asteroids.concat(newAsteroids);
+              //particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
+              //playerBullets.splice(i,1)
+              //continue
+            }
+            asteroids.splice(j, 1);
+            playerBullets.splice(i, 1);
+            break;
+          }
+      }
+    }
+  }
 }

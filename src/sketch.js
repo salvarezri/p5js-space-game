@@ -63,11 +63,13 @@ function setup() {
 
 }
 function draw() {
-  
+  player.edges()
     backgroundStars.draw()
     update()
     handleParticles()
+   
     player.draw()
+   playerCollision()
     handleAsteroid()
     moveAndDrawBullets()
   
@@ -141,6 +143,21 @@ function moveAndDrawBullets(){
             break;
           }
       }
+    }
+  }
+}
+
+function playerCollision (){
+
+  for (let j = asteroids.length - 1; j >= 0; j--){
+    
+    if(asteroids[j].checkCollision(player)){
+      alert("PUM")
+      /*particles.push(particleExplosion([asteroids[j].pos.x,asteroids[j].pos.y]));  
+      let newAsteroids = asteroids[j].breakup();
+      asteroids = asteroids.concat(newAsteroids);
+      asteroids.splice(j, 1);
+      */
     }
   }
 }

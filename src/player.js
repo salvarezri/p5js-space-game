@@ -18,6 +18,7 @@ class Player{
     this.impulseSound.setVolume(0.2)
     this.explotionSound = explotionSound
     this.img = img;
+    this.r = 25;
   }
   movement(){
     if(keyIsPressed){
@@ -83,7 +84,7 @@ class Player{
     rotate(this.angle+PI/2);
     if (this.img){
       imageMode(CENTER);
-      image(this.img, 0, 0, 50, 50);  
+      image(this.img, 0, 0, this.r*2, this.r*2);  
     } else {
       circle(0, 0, 50);
       strokeWeight(4);
@@ -114,4 +115,26 @@ class Player{
       this.pos[1] - 20 * sin(this.angle)
     ]
   }
+ //Funcion para movimiento eterno
+  edges() {
+    if (this.pos[0]> width + this.r) {
+      this.pos[0] = -this.r;
+    } else if (this.pos[0] < -this.r) {
+      this.pos[0] = width + this.r;
+    }
+    if (this.pos[1] > height + this.r) {
+      this.pos[1] = -this.r;
+    } else if (this.pos[1] < -this.r) {
+      this.pos[1] = height + this.r;
+    }
+ }
+ getRadius(){
+  return this.r
+ }
+ getPosition(){
+
+  return {x:this.pos[0],
+          y:this.pos[1]}
+ }
+
 }

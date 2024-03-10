@@ -24,19 +24,18 @@ class Bullet{
       stroke(255);
     }
 
-    checkCollision(){
-      // check if the bullet is off boundaries
+    checkCollision(asteroid){
 
-      // chack if bullet collides with an asteroid
-      const colides = random(1, 100) > 98
-      if(colides){
-        this.isAlive = false
+      const rad = asteroid.getRadius()
+      const pos = asteroid.getPosition()
+      if(dist(this.x, this.y, pos.x,pos.y) < rad){
         this.exploplotionSound.play()
         return true
       }
       
       return false
     }
+    
     
     isOffBoundaries(x1, y1, x2, y2){
       return this.x < x1 || this.x > x2 || this.y < y1 || this.y > y2

@@ -117,6 +117,7 @@ function moveAndDrawBullets(){
       } else {
         for (let j = asteroids.length - 1; j >= 0; j--){
           if(playerBullets[i].checkCollision(asteroids[j])){
+            /*
             if (asteroids[j].r > 10) {
               let newAsteroids = asteroids[j].breakup();
               asteroids = asteroids.concat(newAsteroids);
@@ -124,6 +125,10 @@ function moveAndDrawBullets(){
               //playerBullets.splice(i,1)
               //continue
             }
+            */
+            let newAsteroids = asteroids[j].breakup();
+            asteroids = asteroids.concat(newAsteroids);
+            particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
             asteroids.splice(j, 1);
             playerBullets.splice(i, 1);
             break;

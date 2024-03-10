@@ -22,7 +22,14 @@ class Asteroid{
           this.offset[i] = random(-this.r * 0.5, this.r * 0.5)
         }
       }
-    
+      
+      getRadius(){
+        return this.r + this.r*0.2
+      }
+      getPosition(){
+        return this.pos
+      }
+
       update() {
         this.pos.add(this.vel);
       }

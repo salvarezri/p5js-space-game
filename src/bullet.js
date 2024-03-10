@@ -25,21 +25,10 @@ class Bullet{
     }
 
     checkCollision(asteroid){
-      // check if the bullet is off boundaries
 
-      // chack if bullet collides with an asteroid
-      // var d = dist(this.pos.x, this.pos.y, this.asteroid.pos.x, this.asteroid.pos.y);
-      // if (d < asteroid.r) {
-      //   this.isAlive = false
-      //   this.exploplotionSound.play()
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-
-      const colides = random(1, 100) > 98
-      if(colides){
-        this.isAlive = false
+      const rad = asteroid.getRadius()
+      const pos = asteroid.getPosition()
+      if(dist(this.x, this.y, pos.x,pos.y) < rad){
         this.exploplotionSound.play()
         return true
       }

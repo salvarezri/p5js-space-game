@@ -12,9 +12,16 @@ let sfxExplotion3
 let sfxImpulse1
 let sfxImpulse2
 let sfxLaser1
+let shipImg;
 
+
+  
 function preload(){
+  //load img
+  shipImg = loadImage('resources/nave.png');
+
   // load main music
+
   sfxMainMusic = loadSound('../assets/sounds/music/main.mp3')
   sfxExplotion1 = loadSound('../assets/sounds/explotion/explotion1.mp3')
   sfxExplotion2 = loadSound('../assets/sounds/explotion/explotion2.mp3')
@@ -43,7 +50,7 @@ function setup() {
     cnv.mousePressed(handleMousePressed)
     cnv.mouseReleased(handleMouseReleased)
     backgroundStars = new BackgroundStars()
-    player = new Player(laserSound = sfxLaser1, impulseSound = sfxImpulse1, explotionSound = sfxExplotion1)
+    player = new Player(shipImg,laserSound = sfxLaser1, impulseSound = sfxImpulse1, explotionSound = sfxExplotion1)
     for (let i = 0; i < 5; i++) {
       asteroids.push(new Asteroid());
     }

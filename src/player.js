@@ -1,6 +1,7 @@
+
 class Player{
   // new movement system
-  constructor(laserSound, impulseSound, explotionSound, initialPos, impulse, initialFriction, initialMaxVel, color){
+  constructor(img,laserSound, impulseSound, explotionSound, initialPos, impulse, initialFriction, initialMaxVel, color){
     console.log(laserSound, impulseSound, explotionSound)
     this.pos = initialPos ? initialPos : [200,200]
     this.vel = [0,0]
@@ -16,6 +17,7 @@ class Player{
     this.impulseSound = impulseSound
     this.impulseSound.setVolume(0.2)
     this.explotionSound = explotionSound
+    this.img = img;
   }
   movement(){
     if(keyIsPressed){
@@ -75,16 +77,26 @@ class Player{
   }
 
   draw(){
-    stroke(255,255,255);
-    fill(this.color);
-    circle(this.pos[0],this.pos[1],20);
-    strokeWeight(4);
+    //new Image(naveimg,this.pos[0],this.pos[1],20,20);
+    push();
+    translate(this.pos[0], this.pos[1]);
+    rotate(this.angle+PI/2);
+    if (this.img){
+      imageMode(CENTER);
+      image(this.img, 0, 0, 50, 50);  
+    } else {
+      circle(0, 0, 50);
+      strokeWeight(4);
     line(
       this.pos[0],
       this.pos[1],
       this.pos[0] + 30 * cos(this.angle),
       this.pos[1] + 30 * sin(this.angle)
       )
+    } 
+    
+    pop();
+    
   }
   shoot(){
     // create a bullet

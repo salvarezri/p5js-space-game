@@ -2,7 +2,6 @@
 class Player{
   // new movement system
   constructor(img,laserSound, impulseSound, explotionSound, initialPos, impulse, initialFriction, initialMaxVel, color){
-    console.log(laserSound, impulseSound, explotionSound)
     this.pos = initialPos ? initialPos : [200,200]
     this.vel = [0,0]
     this.acc = [0,0]
@@ -18,6 +17,11 @@ class Player{
     this.impulseSound.setVolume(0.2)
     this.explotionSound = explotionSound
     this.img = img;
+    this.r = 25;
+    this.isDeath = false;
+    this.timecount = 0
+    this.bulletTimeCount = 0
+    this.ShootSpeed = 10
   }
   movement(){
     if(keyIsPressed){
@@ -72,18 +76,29 @@ class Player{
   
   update()
   { 
+    if(this.isDeath){
+      this.timecount++
+      if(this.timecount > 70){
+        this.revive()
+      }
+      return
+    }
     this.calcRotation()
     this.movement()
+    this.bulletTimeCount++
   }
 
   draw(){
     //new Image(naveimg,this.pos[0],this.pos[1],20,20);
+    if(this.isDeath){
+      return
+    }
     push();
     translate(this.pos[0], this.pos[1]);
     rotate(this.angle+PI/2);
     if (this.img){
       imageMode(CENTER);
-      image(this.img, 0, 0, 50, 50);  
+      image(this.img, 0, 0, this.r*2, this.r*2);  
     } else {
       circle(0, 0, 50);
       strokeWeight(4);
@@ -101,6 +116,7 @@ class Player{
   shoot(){
     // create a bullet
     this.laserSound.play()
+    this.bulletTimeCount = 0
     return new Bullet(this.pos[0], this.pos[1], this.angle, [100,255,100], this.explotionSound)
   }
 
@@ -114,4 +130,49 @@ class Player{
       this.pos[1] - 20 * sin(this.angle)
     ]
   }
+ //Funcion para movimiento eterno
+  edges() {
+    if (this.pos[0]> width + this.r) {
+      this.pos[0] = -this.r;
+    } else if (this.pos[0] < -this.r) {
+      this.pos[0] = width + this.r;
+    }
+    if (this.pos[1] > height + this.r) {
+      this.pos[1] = -this.r;
+    } else if (this.pos[1] < -this.r) {
+      this.pos[1] = height + this.r;
+    }
+ }
+ getRadius(){
+  return this.r
+ }
+ getPosition(){
+
+  return {x:this.pos[0],
+          y:this.pos[1]}
+ }
+
+  restartPosition(){
+    // restart the position of the player
+    this.acc = [0,0]
+    this.vel = [0,0]
+    this.isAccelerating = false
+    
+    this.pos =  [width/2,height/2]
+    
+  }
+  isAlive(){
+    return !this.isDeath
+  }
+  death(){
+    this.isDeath = true
+    this.timecount = 0
+  }
+  revive(){
+    this.isDeath = false
+  }
+  canShoot(){
+    return this.bulletTimeCount > this.ShootSpeed
+  }
+
 }

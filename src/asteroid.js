@@ -71,4 +71,16 @@ class Asteroid{
           this.pos.y = height + this.r;
         }
      }
+     checkCollision(player){
+      const rad = player.getRadius()
+      const pos = player.getPosition()
+      if(dist(this.pos.x, this.pos.y, pos.x,pos.y) < rad+this.r){
+        player.explotionSound.play();
+        return true
+      } 
+      return false
+    }
+    points(){
+      return floor(50/this.r)
+    }
 }

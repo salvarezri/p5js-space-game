@@ -1,34 +1,43 @@
-/*
 let myFont;
-let text; 
-let startAgaingButton;
-let value;
-let screenColor = 123;
+let myText;
 let button;
+let val = 0;
+let gameOverColor = 255;
+let randomVal;
 
-function preload(){
-    myFont = loadFont('../assets/fonts/PressStart2P-Regular.ttf');
+function preload() {
+  myFont = loadFont('PressStart2P-Regular.ttf');
 }
 
-function setup(){
-    createCanvas(400, 400);
-    text = "GAME OVER!";
-    startAgaingButton = createButton('RESTART');
-    startAgaingButton.position(width / 2- 70, height / 2 + 50);
-    //button.mousePressed(); restart game
-    button.style("background-color", "green");
-    button.style("font-size", "lem");
-    button.style("color", "white");
-    button.style("font-family", "Press Start 2P", "cursive");
-    button.style("position", "absolute");
+function setup() {
+  createCanvas(400, 400);
+  
+  myText = "GAME OVER!"
+  
+  button = createButton('RESTART');
+  button.position(width /2 - 70, height/2 + 50);
+  button.mousePressed(restartGame);
+  button.style("background-color", "green")
+  button.style("font-size", "1em")
+  button.style("color", "white")
+  button.style("font-family", "Press Start 2P", "cursive")
+  button.style("padding", "5px")
+  button.style("position", "absolute")
+  
+  console.log(button);
 }
 
-function draw(){
-    background(10);
-    fill(screenColor);
-    textFont(myFont);
-    textSize(36);
-    textAlign(CENTER);
-    text(text, width/2, height/2);
+function restartGame() {
+  console.log("* c reinicia");
 }
-*/
+
+function draw() {
+  background(val);
+  fill(gameOverColor);
+  textFont(myFont);
+  textSize(36);
+  textAlign(CENTER);
+  text(myText, width/2, height/2);
+  randomVal = (random(0, 255));
+  gameOverColor = (randomVal, 0, randomVal*10)
+}

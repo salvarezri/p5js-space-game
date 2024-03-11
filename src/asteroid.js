@@ -72,18 +72,15 @@ class Asteroid{
         }
      }
      checkCollision(player){
-      console.log("ENTRE")
-
       const rad = player.getRadius()
-      console.log(rad)
       const pos = player.getPosition()
-      console.log(pos)
       if(dist(this.pos.x, this.pos.y, pos.x,pos.y) < rad+this.r){
-        player.explotionSound.play()
-        
+        player.explotionSound.play();
         return true
-      }
-      
+      } 
       return false
+    }
+    points(){
+      return floor(50/this.r)
     }
 }

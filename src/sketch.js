@@ -13,6 +13,8 @@ let sfxImpulse1
 let sfxImpulse2
 let sfxLaser1
 let shipImg;
+let points = 0
+let life = 5
 
 
   
@@ -51,16 +53,11 @@ function setup() {
     cnv.mouseReleased(handleMouseReleased)
     backgroundStars = new BackgroundStars()
     player = new Player(shipImg,laserSound = sfxLaser1, impulseSound = sfxImpulse1, explotionSound = sfxExplotion1)
-    for (let i = 0; i < 5; i++) {
-      asteroids.push(new Asteroid());
-    }
+    initAsteroids(5)
   //}
   
   // to test the two different player movements change the next line to:
   // player = new Player2()
-  
-  
-
 }
 function draw() {
   player.edges()
@@ -95,7 +92,9 @@ function handleParticles(){
   drawParticles()
 }
 function handleMousePressed(){
-  playerBullets.push(player.shoot())
+  if(player.isAlive() && player.canShoot()){
+    playerBullets.push(player.shoot())
+  }
 }
 function handleMouseReleased (){
   // particles.push(particleExplosion([mouseX,mouseY]));
@@ -105,19 +104,6 @@ function moveAndDrawBullets(){
   // move the bullets and remove the ones that are off boundaries
   // go through the array backwards to avoid skipping elements when the element is removed
 
-  // for (let i = playerBullets.length-1; i >= 0; i--){
-  //   playerBullets[i].move()
-  //   playerBullets[i].draw()
-  //   if(playerBullets[i].checkCollision()){
-  //     particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
-  //     playerBullets.splice(i,1)
-  //     continue
-  //   }
-  //   if(playerBullets[i].isOffBoundaries(0,0,width,height)){
-  //     playerBullets.splice(i,1)
-  //   }
-  // }
-
   for (let i = playerBullets.length-1; i >= 0; i--){
     playerBullets[i].move()
     playerBullets[i].draw()
@@ -126,20 +112,13 @@ function moveAndDrawBullets(){
       } else {
         for (let j = asteroids.length - 1; j >= 0; j--){
           if(playerBullets[i].checkCollision(asteroids[j])){
-            /*
-            if (asteroids[j].r > 10) {
-              let newAsteroids = asteroids[j].breakup();
-              asteroids = asteroids.concat(newAsteroids);
-              //particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
-              //playerBullets.splice(i,1)
-              //continue
-            }
-            */
+            points += asteroids[j].points()
             let newAsteroids = asteroids[j].breakup();
             asteroids = asteroids.concat(newAsteroids);
             particles.push(particleExplosion([playerBullets[i].x,playerBullets[i].y]));
             asteroids.splice(j, 1);
             playerBullets.splice(i, 1);
+            console.log('points', points)
             break;
           }
       }
@@ -151,13 +130,33 @@ function playerCollision (){
 
   for (let j = asteroids.length - 1; j >= 0; j--){
     
-    if(asteroids[j].checkCollision(player)){
-      alert("PUM")
-      /*particles.push(particleExplosion([asteroids[j].pos.x,asteroids[j].pos.y]));  
-      let newAsteroids = asteroids[j].breakup();
+    if(asteroids[j].checkCollision(player) && player.isAlive()){
+      console.log('collision')
+      player.restartPosition();
+      const newAsteroids = asteroids[j].breakup();
       asteroids = asteroids.concat(newAsteroids);
+      particles.push(particleExplosion([asteroids[j].pos.x,asteroids[j].pos.y]));
       asteroids.splice(j, 1);
-      */
+      player.death()
+      life -= 1
+      if(life == 0){
+        gameOver()
+        break;
+      }
+      
     }
+    
   }
+}
+function initAsteroids(n){
+  asteroids = []
+  for (let i = 0; i < n; i++) {
+    asteroids.push(new Asteroid());
+  }
+}
+function gameOver() {
+  alert('Game Over')
+  initAsteroids(5)
+  life = 5
+  points = 0
 }

@@ -61,14 +61,15 @@ function setup() {
 }
 function draw() {
   player.edges()
-    backgroundStars.draw()
-    update()
-    handleParticles()
-   
-    player.draw()
-    playerCollision()
-    handleAsteroid()
-    moveAndDrawBullets()
+  backgroundStars.draw()
+  drawInterface()
+  update()
+  handleParticles()
+  
+  player.draw()
+  playerCollision()
+  handleAsteroid()
+  moveAndDrawBullets()
   
 }
 
@@ -165,6 +166,32 @@ function initAsteroids(n){
 function gameOver() {
   alert('Game Over')
   initAsteroids(5)
+  player.restartPosition()
+  player.revive()
+  player.onFreeTime = 0
   life = 5
   points = 0
+}
+
+function drawInterface(){
+  drawPoints()
+  drawLife()
+}
+function drawPoints(){
+  push()
+  textSize(32);
+  fill(255)
+  stroke(200)
+  strokeWeight(4)
+  text(points, 20, 40)
+  pop()
+}
+
+function drawLife(){
+  push()
+  textSize(20);
+  stroke(200)
+  strokeWeight(4)
+  text("🤍".repeat(life), width-150, 40)
+  pop()
 }

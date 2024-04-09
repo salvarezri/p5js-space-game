@@ -22,6 +22,8 @@ class Player{
     this.timecount = 0
     this.bulletTimeCount = 0
     this.ShootSpeed = 10
+    this.onFreeTime = 0
+    this.limit = 50
   }
   movement(){
     if(keyIsPressed){
@@ -76,39 +78,53 @@ class Player{
   
   update()
   { 
+    console.log(this.onFreeTime, this.isDeath)
+     
     if(this.isDeath){
+      console.log(":ca")
       this.timecount++
-      if(this.timecount > 70){
+      if(this.timecount > this.limit){
         this.revive()
       }
+    }else{
+      
+      this.calcRotation()
+      this.movement()
+      this.bulletTimeCount++
+    }
+    if(this.onFreeTime > 0){
+      this.onFreeTime--
       return
     }
-    this.calcRotation()
-    this.movement()
-    this.bulletTimeCount++
   }
 
   draw(){
     //new Image(naveimg,this.pos[0],this.pos[1],20,20);
-    if(this.isDeath){
+    if(this.isDeath && this.onFreeTime > 0){
       return
     }
     push();
     translate(this.pos[0], this.pos[1]);
     rotate(this.angle+PI/2);
-    if (this.img){
-      imageMode(CENTER);
-      image(this.img, 0, 0, this.r*2, this.r*2);  
-    } else {
-      circle(0, 0, 50);
+    if(this.onFreeTime > 0){
+      fill(this.onFreeTime/(this.limit*2) * 255)
+      circle(0, 0, 25);
       strokeWeight(4);
-    line(
-      this.pos[0],
-      this.pos[1],
-      this.pos[0] + 30 * cos(this.angle),
-      this.pos[1] + 30 * sin(this.angle)
-      )
-    } 
+      stroke(255, 255, 255, this.onFreeTime/(this.limit*2) * 255)
+      
+      rotate(PI/4 + PI);
+      line(
+        0,
+        0,
+        0 + 30 ,
+        0 + 30 
+        )
+    }else{
+      if (this.img){
+        imageMode(CENTER);
+        image(this.img, 0, 0, this.r*2, this.r*2);  
+      } 
+    }
     
     pop();
     
@@ -167,11 +183,15 @@ class Player{
   death(){
     this.isDeath = true
     this.timecount = 0
+    this.onFreeTime = this.limit*2
   }
   revive(){
     this.isDeath = false
   }
   canShoot(){
+    if(this.onFreeTime>0){
+      return false
+    }
     return this.bulletTimeCount > this.ShootSpeed
   }
 

@@ -66,7 +66,7 @@ function draw() {
     handleParticles()
    
     player.draw()
-   playerCollision()
+    playerCollision()
     handleAsteroid()
     moveAndDrawBullets()
   
@@ -77,10 +77,17 @@ function update() {
 }
 
 function handleAsteroid(){
-  for (let i = 0; i < asteroids.length; i++) {
-    asteroids[i].render();
-    asteroids[i].update();
-    asteroids[i].edges();
+  if (asteroids.length < 3){
+    initAsteroids(5)
+  }
+  for (let i = asteroids.length - 1; i >= 0; i--) {
+    if (asteroids[i].r < 5){
+      asteroids.splice(i, 1);
+    }else{
+      asteroids[i].render();
+      asteroids[i].update();
+      asteroids[i].edges();
+    }
   }
 }
 
@@ -127,11 +134,12 @@ function moveAndDrawBullets(){
 }
 
 function playerCollision (){
-
+  if (player.onFreeTime > 0){
+    return;
+  }
   for (let j = asteroids.length - 1; j >= 0; j--){
     
-    if(asteroids[j].checkCollision(player) && player.isAlive()){
-      console.log('collision')
+    if(asteroids[j].checkCollision(player)){
       player.restartPosition();
       const newAsteroids = asteroids[j].breakup();
       asteroids = asteroids.concat(newAsteroids);
@@ -151,7 +159,7 @@ function playerCollision (){
 function initAsteroids(n){
   asteroids = []
   for (let i = 0; i < n; i++) {
-    asteroids.push(new Asteroid());
+    asteroids.push(new Asteroid(undefined, undefined, player));
   }
 }
 function gameOver() {

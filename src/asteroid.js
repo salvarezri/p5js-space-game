@@ -1,13 +1,16 @@
 class Asteroid{
-    constructor(pos, r) {
+    constructor(pos, r, player) {
         if(pos){
           this.pos = pos.copy()
         } else{
           this.pos =createVector(random(width), random(height)) 
         }
+        while(dist(this.pos.x, this.pos.y, player.getPosition().x, player.getPosition().y) < 100){
+          this.pos =createVector(random(width), random(height)) 
+        }
         if(r){
           if(r < 15){
-            this.r = 0
+            this.r = 1
           } else{
             this.r = r * 0.5
           }
@@ -21,6 +24,7 @@ class Asteroid{
         for (let i = 0; i < this.total; i++) {
           this.offset[i] = random(-this.r * 0.5, this.r * 0.5)
         }
+        this.player = player
       }
       
       getRadius(){
@@ -54,8 +58,8 @@ class Asteroid{
 
       breakup() {
         var newA = [];
-        newA[0] = new Asteroid(this.pos, this.r);
-        newA[1] = new Asteroid(this.pos, this.r);
+        newA[0] = new Asteroid(this.pos, this.r, this.player);
+        newA[1] = new Asteroid(this.pos, this.r, this.player);
         return newA;
       }
 
@@ -75,6 +79,7 @@ class Asteroid{
       const rad = player.getRadius()
       const pos = player.getPosition()
       if(dist(this.pos.x, this.pos.y, pos.x,pos.y) < rad+this.r){
+        console.log('collision: ', this.r, rad, dist(this.pos.x, this.pos.y, pos.x,pos.y))
         player.explotionSound.play();
         return true
       } 
